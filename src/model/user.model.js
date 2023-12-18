@@ -12,12 +12,10 @@ module.exports = (sequelize, Sequelize) => {
     contact_number: {
       type: Sequelize.STRING,
       allowNull: true,
-      unique: true,
     },
     email: {
       type: Sequelize.STRING,
       allowNull: false,
-      unique: true,
     },
   });
   return userDetails;

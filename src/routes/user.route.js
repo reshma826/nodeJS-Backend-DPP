@@ -4,6 +4,4 @@ const { userController } = require("../controllers");
 
 router.get("/google", userController.googleSignIn);
 
-router.post("/user", userController.userLogin);
-
 module.exports = router;

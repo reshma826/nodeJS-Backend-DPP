@@ -2,7 +2,7 @@ const { pickUpService } = require("../services");
 
 const savePickUpDetails = async (req, res) => {
   const response = await pickUpService.addPickUpDetails(req.body);
-  res.send({ response });
+  res.status(response.status).json({ response });
 };
 
 const updateDetails = async (req, res) => {
@@ -14,7 +14,7 @@ const updateDetails = async (req, res) => {
   } else {
     response = await pickUpService.updatePickUpDetails(payload, id);
   }
-  res.send(response);
+  res.status(response.status).json({ response });
 };
 
 module.exports = { savePickUpDetails, updateDetails };

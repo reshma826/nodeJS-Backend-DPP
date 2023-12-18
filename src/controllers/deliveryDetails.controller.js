@@ -2,7 +2,7 @@ const { deliveryService } = require("../services");
 
 const saveDeliveryDetails = async (req, res) => {
   const response = await deliveryService.addDeliveryDetails(req.body);
-  res.send({ response });
+  res.status(response.status).json({ message: response.message });
 };
 
 const updateDetails = async (req, res) => {
@@ -14,7 +14,7 @@ const updateDetails = async (req, res) => {
   } else {
     response = await deliveryService.updateDeliveryDetails(payload, id);
   }
-  res.send(response);
+  res.status(response.status).json({ response });
 };
 
 module.exports = { saveDeliveryDetails, updateDetails };

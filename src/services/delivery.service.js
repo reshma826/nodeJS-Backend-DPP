@@ -20,6 +20,7 @@ const addDeliveryDetails = async (payload) => {
     return responseToSend;
   } catch (err) {
     logger.error(err);
+    throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, err);
   }
 };
 
@@ -55,6 +56,7 @@ const updateDvdDeliveryDetails = async (payload, delivery_id) => {
     where: { id: delivery_id },
   });
   if (!details) {
+    console.log("Details not found");
     return {
       status: httpStatus.NOT_FOUND,
       message: "Details not found",
@@ -72,6 +74,7 @@ const updateDvdDeliveryDetails = async (payload, delivery_id) => {
       where: { id: delivery_id },
     }
   );
+  console.log("Details updated successfully");
   logger.info("Details updated successfully");
   return {
     status: httpStatus.OK,

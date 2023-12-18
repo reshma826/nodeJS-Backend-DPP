@@ -2,8 +2,18 @@ const express = require("express");
 const router = express.Router();
 const pickUpController = require("../controllers/pickUp.controller");
 
-router.post("/addPickUpDetails", pickUpController.savePickUpDetails);
+const authenticateUser = require("../middleware/auth");
 
-router.put("/updateDetails/:id", pickUpController.updateDetails);
+router.post(
+  "/addPickUpDetails",
+  authenticateUser,
+  pickUpController.savePickUpDetails
+);
+
+router.put(
+  "/updateDetails/:id",
+  authenticateUser,
+  pickUpController.updateDetails
+);
 
 module.exports = router;

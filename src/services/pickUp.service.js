@@ -34,6 +34,7 @@ const addPickUpDetails = async (payload) => {
     payload.awaiting_pickUp = awaiting_pickUp;
 
     const dbResponse = await pickUpDetails.create(payload);
+    console.log("pickUp details added Successfully");
     responseToSend = {
       status: httpStatus.OK,
       message: "pickUp details added Successfully",
@@ -42,6 +43,7 @@ const addPickUpDetails = async (payload) => {
     return responseToSend;
   } catch (err) {
     logger.error(err);
+    throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, err);
   }
 };
 
@@ -58,8 +60,9 @@ const updatePickUpDetails = async (payload, pickUp_id) => {
   }
   try {
     Object.assign(details, payload);
-    await pickUpDetails.save({ transaction: t });
+    await details.save({ transaction: t });
     await t.commit();
+    console.log("pickUp details updated Successfully");
     logger.info(" Pick up Details updated successfully");
     return {
       status: httpStatus.OK,
@@ -82,6 +85,11 @@ const updateDvdPickUpDetails = async (payload, pickUp_id) => {
       message: "Details not found",
     };
   }
+
+  const customerDetails = await customerSrvice.getCustomerDetails(
+    details.dataValues.customer_contact_number
+  );
+  let customerId = customerDetails.dataValues.id;
   const deliveryDetails = await deliveryService.getDeliveryDetailsByCustomerId(
     customerId
   );

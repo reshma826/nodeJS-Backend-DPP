@@ -4,18 +4,23 @@ const httpStatus = require("http-status");
 const logger = require("../config/logger");
 
 const addCustomer = async (payload) => {
+  let responseToSend;
   try {
-    let responseToSend;
     const dbResponse = await customer.create(payload);
+    console.log("Customer added");
     responseToSend = {
       status: httpStatus.OK,
       message: "Customer added Successfully",
       customer_id: dbResponse.dataValues.id,
     };
-    return responseToSend;
   } catch (err) {
-    logger.error(err);
+    logger.error(err.errors[0].message);
+    responseToSend = {
+      status: httpStatus.NOT_FOUND,
+      message: err.errors[0].message,
+    };
   }
+  return responseToSend;
 };
 
 const getCustomerDetails = async (contactNumber) => {
@@ -26,6 +31,7 @@ const getCustomerDetails = async (contactNumber) => {
     return details;
   } catch (err) {
     logger.error(err);
+    throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, err);
   }
 };
 
